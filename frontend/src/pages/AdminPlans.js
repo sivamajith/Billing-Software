@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Box, Button, Table, TableBody, TableCell, TableHead, TableRow, Paper, TableContainer, TextField, Dialog, DialogTitle, DialogContent, DialogActions, Select, MenuItem, FormControl, InputLabel, Typography } from '@mui/material';
 import Layout from '../components/Layout';
 import { plansAPI, shopsAPI } from '../services/api';
-import { ADMIN_PATH } from '../utils/helpers';
+
 
 const AdminPlans = ({ toggleTheme, darkMode }) => {
   const [plans, setPlans] = useState([]);

@@ -3,7 +3,7 @@ import {
   Box, Button, Dialog, DialogTitle, DialogContent, DialogActions,
   TextField, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Chip, Grid, FormControl, InputLabel, Select, MenuItem,
 } from '@mui/material';
-import { Add, Edit, Delete } from '@mui/icons-material';
+import { Add } from '@mui/icons-material';
 import Layout from '../components/Layout';
 import { shopsAPI, usersAPI } from '../services/api';
 import { formatDateTime } from '../utils/helpers';
