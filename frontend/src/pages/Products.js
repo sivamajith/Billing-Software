@@ -3,8 +3,9 @@ import {
   Box, Button, Dialog, DialogTitle, DialogContent, DialogActions,
   TextField, Table, TableBody, TableCell, TableContainer, TableHead,
   TableRow, Paper, IconButton, Chip, Grid, FormControl, InputLabel, Select, MenuItem,
+  InputAdornment,
 } from '@mui/material';
-import { Add, Edit, Delete, UploadFile, Download } from '@mui/icons-material';
+import { Add, Edit, Delete, UploadFile, Download, Search } from '@mui/icons-material';
 import Layout from '../components/Layout';
 import { useAuth } from '../context/AuthContext';
 import { productsAPI } from '../services/api';
@@ -16,6 +17,7 @@ const Products = ({ toggleTheme, darkMode }) => {
   const { user } = useAuth();
   const shopId = user?.shopId;
   const [products, setProducts] = useState([]);
+  const [search, setSearch] = useState('');
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState(emptyProduct);
   const [editId, setEditId] = useState(null);
@@ -102,6 +104,15 @@ const Products = ({ toggleTheme, darkMode }) => {
     fileRef.current?.click();
   };
 
+  const filteredProducts = products.filter((product) => {
+    const query = search.trim().toLowerCase();
+    if (!query) return true;
+
+    return [product.name, product.sku, product.barcode, product.category]
+      .filter(Boolean)
+      .some((value) => String(value).toLowerCase().includes(query));
+  });
+
   const handleImport = async (event) => {
     setImportError('');
     const file = event.target.files?.[0];
@@ -147,6 +158,21 @@ const Products = ({ toggleTheme, darkMode }) => {
       {error && <Box color="error.main" mb={2}>{error}</Box>}
       {importError && <Box color="error.main" mb={2}>{importError}</Box>}
 
+      <TextField
+        fullWidth
+        placeholder="Search products by name, SKU, barcode or category"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        sx={{ mb: 2 }}
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <Search />
+            </InputAdornment>
+          ),
+        }}
+      />
+
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -161,7 +187,7 @@ const Products = ({ toggleTheme, darkMode }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {products.map((p) => (
+            {filteredProducts.map((p) => (
               <TableRow key={p._id}>
                 <TableCell>{p.name}</TableCell>
                 <TableCell>{p.sku}</TableCell>
